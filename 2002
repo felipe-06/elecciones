@@ -1,0 +1,44 @@
+--Resumen acciones e limpieza a realizar:
+--Estandarizar el formato de fechas.
+--Union de los nombres y apellidos de cada candidato.
+--Remover espacios nulos de la lista de votos.
+
+SELECT*
+FROM project.elecciones;
+
+--Estandarizar formato de fechas
+
+SELECT 
+  fecha_eleccion, ano, CONCAT (fecha_eleccion, " ", ano) AS fecha_elecciones
+FROM 
+  project.elecciones
+
+SELECT 
+  fecha, CONVERT (Date, fecha_elecciones)
+FROM 
+  project.elecciones
+
+ALTER TABLE project.elecciones
+ADD fecha Date
+
+UPDATE Project.elecciones
+SET fecha = CONVERT (Date, fecha_elecciones)
+
+SELECT fecha_elecciones, fecha
+FROM Project.elecciones
+
+--Union de nombres y apellidos de los candidatos
+
+SELECT 
+  nombres, primer_apellido, segundo_apellido 
+  CONCAT(nombres, ' ', primer_apellido, ' ', segundo_apellido) AS nombre_completo
+FROM 
+  project.elecciones
+ORDER BY
+  nombre_completo
+
+--Remover filas con espacios nulos.
+DELETE FROM 
+  project.elecciones
+WHERE
+  votos IS NULL
